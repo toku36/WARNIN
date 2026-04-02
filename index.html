@@ -1,1 +1,151 @@
-<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <title>CRITICAL BREACH</title> <style> body { margin: 0; background: black; color: red; font-family: monospace; overflow: hidden; } #overlay { position: fixed; width: 100%; height: 100%; background: black; color: red; display: flex; align-items: center; justify-content: center; font-size: 24px; cursor: pointer; z-index: 10; text-shadow: 0 0 10px red; } #terminal { padding: 20px; white-space: pre-line; text-shadow: 0 0 8px red; } .cursor { display: inline-block; width: 10px; background: red; animation: blink 1s infinite; } @keyframes blink { 50% { opacity: 0; } } .flash { position: fixed; width: 100%; height: 100%; background: red; opacity: 0; } </style> </head> <body> <div id="overlay">▶ TAP TO ENTER SYSTEM</div> <div id="terminal"></div><span class="cursor"></span> <div class="flash" id="flash"></div> <script> const overlay = document.getElementById("overlay"); const terminal = document.getElementById("terminal"); const flash = document.getElementById("flash"); const audioCtx = new (window.AudioContext || window.webkitAudioContext)(); function beep(freq, duration=0.05) { const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); osc.type = "square"; osc.frequency.setValueAtTime(freq, audioCtx.currentTime); gain.gain.setValueAtTime(0.15, audioCtx.currentTime); osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + duration); } const lines = [ "[BOOT] Initializing kernel...", "[ERROR] Unauthorized access detected", "[BYPASS] Firewall failure", "", "[SCAN] Searching database...", "[FOUND] drms", "[FOUND] airii", "", "[DECRYPT] ███████████████████", "[STATUS] ACCESS GRANTED", "", "[INJECT] Executing payload...", "[OVERRIDE] Control acquired", "", "[CRITICAL WARNING]", "drms has been compromised.", "airii has been compromised.", "", ">>> SYSTEM FAILURE <<<", ">>> YOU ARE NOT SAFE <<<" ]; let i = 0; let j = 0; function type() { if (i < lines.length) { if (j < lines[i].length) { terminal.innerHTML += lines[i][j]; beep(800); j++; setTimeout(type, 20); } else { terminal.innerHTML += "\n"; i++; j = 0; if (lines[i] && lines[i].includes("ERROR")) beep(1200); if (lines[i] && lines[i].includes("CRITICAL")) beep(400, 0.2); setTimeout(type, 120); } } else { finalSequence(); } } function finalSequence() { let count = 0; const interval = setInterval(() => { beep(200, 0.3); flash.style.opacity = flash.style.opacity == 0 ? 0.5 : 0; count++; if (count > 10) clearInterval(interval); }, 300); } overlay.onclick = () => { overlay.style.display = "none"; if (document.documentElement.requestFullscreen) { document.documentElement.requestFullscreen(); } audioCtx.resume(); // 音ON type(); }; </script> </body> </html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CRITICAL BREACH</title>
+<style>
+body {
+  margin: 0;
+  background: black;
+  color: red;
+  font-family: monospace;
+  overflow: hidden;
+}
+#overlay {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: black;
+  color: red;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 10;
+  text-shadow: 0 0 10px red;
+}
+#terminal {
+  padding: 20px;
+  white-space: pre-line;
+  text-shadow: 0 0 8px red;
+}
+.cursor {
+  display: inline-block;
+  width: 10px;
+  background: red;
+  animation: blink 1s infinite;
+}
+@keyframes blink {
+  50% { opacity: 0; }
+}
+.flash {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: red;
+  opacity: 0;
+}
+</style>
+</head>
+<body>
+
+<div id="overlay">▶ TAP TO ENTER SYSTEM</div>
+<div id="terminal"></div><span class="cursor"></span>
+<div class="flash" id="flash"></div>
+
+<script>
+const overlay = document.getElementById("overlay");
+const terminal = document.getElementById("terminal");
+const flash = document.getElementById("flash");
+
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+function beep(freq, duration=0.05) {
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+
+  osc.type = "square";
+  osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+  gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+
+  osc.start();
+  osc.stop(audioCtx.currentTime + duration);
+}
+
+const lines = [
+"[BOOT] Initializing kernel...",
+"[ERROR] Unauthorized access detected",
+"[BYPASS] Firewall failure",
+"",
+"[SCAN] Searching database...",
+"[FOUND] drms",
+"[FOUND] airii",
+"",
+"[DECRYPT] ███████████████████",
+"[STATUS] ACCESS GRANTED",
+"",
+"[INJECT] Executing payload...",
+"[OVERRIDE] Control acquired",
+"",
+"[CRITICAL WARNING]",
+"drms has been compromised.",
+"airii has been compromised.",
+"",
+">>> SYSTEM FAILURE <<<",
+">>> YOU ARE NOT SAFE <<<"
+];
+
+let i = 0;
+let j = 0;
+
+function type() {
+  if (i < lines.length) {
+    if (j < lines[i].length) {
+      terminal.innerHTML += lines[i][j];
+      beep(800);
+      j++;
+      setTimeout(type, 20);
+    } else {
+      terminal.innerHTML += "\n";
+      i++;
+      j = 0;
+
+      if (lines[i] && lines[i].includes("ERROR")) beep(1200);
+      if (lines[i] && lines[i].includes("CRITICAL")) beep(400, 0.2);
+
+      setTimeout(type, 120);
+    }
+  } else {
+    finalSequence();
+  }
+}
+
+function finalSequence() {
+  let count = 0;
+  const interval = setInterval(() => {
+    beep(200, 0.3);
+    flash.style.opacity = flash.style.opacity == 0 ? 0.5 : 0;
+    count++;
+    if (count > 10) clearInterval(interval);
+  }, 300);
+}
+
+overlay.onclick = () => {
+  overlay.style.display = "none";
+
+  if (document.documentElement.requestFullscreen) {
+    document.documentElement.requestFullscreen();
+  }
+
+  audioCtx.resume(); // 音ON
+  type();
+};
+</script>
+
+</body>
+</html>
